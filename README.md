@@ -1,6 +1,6 @@
 # Enforcement product infrastructure
 
-Contains the product infrastructure components per Environment for Enforcement Service
+Contains the product infrastructure components per Environment for Enforcement Service.
 
 - Resource Group
 - Azure Key Vault

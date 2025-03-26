@@ -15,3 +15,19 @@ module "key-vault" {
 output "vaultName" {
   value = module.key-vault.key_vault_name
 }
+
+data "azurerm_key_vault" "s2s_vault" {
+  name                = "s2s-${var.env}"
+  resource_group_name = "rpe-service-auth-provider-${var.env}"
+}
+
+data "azurerm_key_vault_secret" "api_s2s_key_from_vault" {
+  name         = "microservicekey-enforcement-api"
+  key_vault_id = data.azurerm_key_vault.s2s_vault.id
+}
+
+resource "azurerm_key_vault_secret" "enforcement-api-s2s-secret" {
+  name         = "enforcement-api-s2s-secret"
+  value        = data.azurerm_key_vault_secret.api_s2s_key_from_vault.value
+  key_vault_id = module.key-vault.key_vault_id
+}
